@@ -32,7 +32,7 @@ const AdBannerRow: React.FC = () => {
   ];
 
   return (
-    <div className="w-full py-6">
+    <div className="w-full py-6 bg-[#fcfcfc]">
       <div className="items-center justify-center mx-auto px-4">
         <div className="flex flex-col md:flex-row gap-20 items-center justify-center py-12 ">
           {advertisements.map((ad) => (

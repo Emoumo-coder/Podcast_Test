@@ -18,7 +18,7 @@ interface PodcastCard {
   image: string;
 }
 
-const StoryTelling: React.FC = () => {
+const Tech: React.FC = () => {
   const podcasts: PodcastCard[] = [
     {
       id: 1,
@@ -54,18 +54,11 @@ const StoryTelling: React.FC = () => {
 
   return (
     <div className="bg-[#fcfcfc] p-4">
-      {/* Header */}
-      <div className="bg-[#F0E4FF] p-4 mb-6">
-        <h2 className="text-lg font-bold text-[#282828]">
-          LISTEN BY ABR CATEGORIES
-        </h2>
-      </div>
-
       {/* Category Title and View All */}
       <div className="flex justify-between items-center my-8">
         <h3 className="font-medium text-gray-800">
           <span className="text-red-500 mr-1">|</span>
-          News & Storytelling
+          Tech, Sport & Business
         </h3>
         <button className="text-purple-600 text-sm border border-purple-600 rounded-full px-3 py-1 flex items-center">
           View all <FiChevronRight className="ml-1" />
@@ -110,4 +103,4 @@ const StoryTelling: React.FC = () => {
   );
 };
 
-export default StoryTelling;
+export default Tech;
