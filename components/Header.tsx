@@ -54,7 +54,7 @@ const Navigation: React.FC = () => {
             <span>Latest News</span>
           </Link>
           <Link
-            href="/schedules"
+            href="/Episode"
             className="flex items-center space-x-1 hover:text-gray-300"
           >
             <PiMicrophoneStageFill className="h-5 w-5" />
@@ -171,7 +171,7 @@ const Navigation: React.FC = () => {
             </Link>
 
             <Link
-              href="/episodes"
+              href="/Episode"
               className="flex items-center space-x-2 px-3 py-2 rounded hover:bg-gray-800"
             >
               <svg

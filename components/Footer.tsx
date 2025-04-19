@@ -17,7 +17,7 @@ const navLinks = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
   { label: "Contact Us", href: "/contact" },
-  { label: "All Podcast", href: "/podcasts" },
+  { label: "All Podcast", href: "/AllPodcasts" },
   { label: "Advertise", href: "/advertise" },
   { label: "Resources", href: "/resources" },
 

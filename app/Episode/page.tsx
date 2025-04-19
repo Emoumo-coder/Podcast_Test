@@ -1,3 +1,4 @@
+"use client"
 import PodcastPlayer from "@/components/PodcastPlayer";
 import Queue from "@/components/Queue";
 import Subscribe from "@/components/Subscribe";
