@@ -20,74 +20,31 @@ interface PodcastProps {
 }
 
 const TrendingPodcasts: React.FC = () => {
-  const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [podcasts, setPodcasts] = useState<PodcastProps[]>([]);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    const fetchTrending = async () => {
+      try {
+        const res = await fetch(
+          "https://api.wokpa.app/api/listeners/popular-and-trendingpodcasts?page=1&per_page=15"
+        );
+        const json = await res.json();
+        if (Array.isArray(json.data)) {
+          setPodcasts(json.data);
+        } else {
+          setPodcasts([]);
+        }
+      } catch (error) {
+        console.error("Error fetching podcasts:", error);
+        setPodcasts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const podcasts: PodcastProps[] = [
-    {
-      id: 1,
-      title: "Hope For The Widow",
-      host: "Chinwe Bode-Akinwande",
-      episodeCount: 8,
-      image: "/Trend1.png",
-      appStoreLink: "https://apps.apple.com/app/hope-for-widow",
-      playStoreLink:
-        "https://play.google.com/store/apps/details?id=com.hopeforwidow",
-    },
-    {
-      id: 2,
-      title: "Policy Sphere by Agora Policy",
-      host: "",
-      episodeCount: 22,
-      image: "/Trend2.png",
-      appStoreLink: "https://apps.apple.com/app/policy-sphere",
-      playStoreLink:
-        "https://play.google.com/store/apps/details?id=com.policysphere",
-    },
-    {
-      id: 3,
-      title: "The Harmonised Life",
-      host: "Nkem Offonabo",
-      episodeCount: 18,
-      image: "/Trend3.png",
-      appStoreLink: "https://apps.apple.com/app/harmonised-life",
-      playStoreLink:
-        "https://play.google.com/store/apps/details?id=com.harmonisedlife",
-    },
-    {
-      id: 4,
-      title: "Lifestyle Central",
-      host: "Agu Henry",
-      episodeCount: 12,
-      image: "/Trend4.png",
-      appStoreLink: "https://apps.apple.com/app/lifestyle-central",
-      playStoreLink:
-        "https://play.google.com/store/apps/details?id=com.lifestylecentral",
-    },
-    {
-      id: 5,
-      title: "Wellness Central",
-      host: "",
-      episodeCount: 35,
-      image: "/Trend1.png",
-      appStoreLink: "https://apps.apple.com/app/wellness-central",
-      playStoreLink:
-        "https://play.google.com/store/apps/details?id=com.wellnesscentral",
-    },
-    {
-      id: 6,
-      title: "Wellness Central",
-      host: "",
-      episodeCount: 35,
-      image: "/images/wellness-central.jpg",
-      appStoreLink: "https://apps.apple.com/app/wellness-central",
-      playStoreLink:
-        "https://play.google.com/store/apps/details?id=com.wellnesscentral",
-    },
-  ];
+    fetchTrending();
+  }, []);
 
   return (
     <div className="bg-[#fcfcfc] py-6 px-4 md:px-6">
@@ -102,7 +59,9 @@ const TrendingPodcasts: React.FC = () => {
           </div>
         </div>
 
-        {mounted && (
+        {loading ? (
+          <p className="text-gray-500">Loading...</p>
+        ) : podcasts && podcasts.length > 0 ? (
           <Swiper
             modules={[Navigation, Pagination]}
             spaceBetween={16}
@@ -140,6 +99,8 @@ const TrendingPodcasts: React.FC = () => {
               </SwiperSlide>
             ))}
           </Swiper>
+        ) : (
+          <p className="text-gray-500">Not Exist</p>
         )}
       </div>
     </div>

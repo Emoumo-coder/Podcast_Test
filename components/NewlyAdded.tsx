@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   FiShare2,
   FiBookmark,
@@ -61,56 +61,48 @@ const EpisodeCard: React.FC<{ episode: Episode }> = ({ episode }) => {
 };
 
 const NewlyAddded: React.FC = () => {
-  const episodes: Episode[] = [
-    {
-      id: 1,
-      title: "Relationship Button - Starting Afresh as a Widow",
-      subtitle: "The Good, The Bad and the Ugly",
-      date: "AUG 29, 2023",
-      duration: "45 MINS",
-      part: 5,
-      thumbnailUrl: "/Added1.png",
-    },
-    {
-      id: 2,
-      title: "Employee Well-being: Prioritizing Mental Health in the Workplace",
-      subtitle: "Creating a supportive environment for all employees",
-      date: "AUG 29, 2023",
-      duration: "45 MINS",
-      part: 6,
-      thumbnailUrl: "/Added1.png",
-    },
-    {
-      id: 3,
-      title: "Relationship Button - Starting Afresh as a Widow",
-      subtitle: "The Good, The Bad and the Ugly",
-      date: "AUG 29, 2023",
-      duration: "45 MINS",
-      part: 6,
-      thumbnailUrl: "/Added1.png",
-    },
-    {
-      id: 4,
-      title: "Relationship Button - Starting Afresh as a Widow",
-      subtitle: "The Good, The Bad and the Ugly",
-      date: "AUG 29, 2023",
-      duration: "45 MINS",
-      part: 3,
-      thumbnailUrl: "/Added1.png",
-    },
-    {
-      id: 5,
-      title: "Relationship Button - Starting Afresh as a Widow",
-      subtitle: "The Good, The Bad and the Ugly",
-      date: "AUG 29, 2023",
-      duration: "45 MINS",
-      part: 2,
-      thumbnailUrl: "/Added1.png",
-    },
-  ];
+  const [episodes, setEpisodes] = useState<Episode[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const navigationPrevRef = React.useRef(null);
   const navigationNextRef = React.useRef(null);
+
+  useEffect(() => {
+    const fetchEpisodes = async () => {
+      try {
+        const res = await fetch(
+          "https://api.wokpa.app/api/listeners/episodes/latest?page=1&per_page=15"
+        );
+        const json = await res.json();
+
+        if (Array.isArray(json.data)) {
+          const transformed = json.data.map((ep: any) => ({
+            id: ep.id,
+            title: ep.title,
+            subtitle: ep.subtitle ?? "",
+            date: new Date(ep.created_at).toLocaleDateString("en-US", {
+              month: "short",
+              day: "2-digit",
+              year: "numeric",
+            }),
+            duration: ep.duration ?? "Unknown Duration",
+            part: ep.part,
+            thumbnailUrl: ep.picture_url,
+          }));
+          setEpisodes(transformed);
+        } else {
+          setEpisodes([]);
+        }
+      } catch (error) {
+        console.error("Error fetching episodes:", error);
+        setEpisodes([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEpisodes();
+  }, []);
 
   return (
     <div className="p-4 px-12 bg-[#fcfcfc]">
@@ -133,43 +125,48 @@ const NewlyAddded: React.FC = () => {
           </button>
         </div>
       </div>
-
-      <Swiper
-        modules={[Navigation]}
-        spaceBetween={16}
-        slidesPerView={1}
-        navigation={{
-          prevEl: navigationPrevRef.current,
-          nextEl: navigationNextRef.current,
-        }}
-        onBeforeInit={(swiper) => {
-          // @ts-ignore
-          swiper.params.navigation.prevEl = navigationPrevRef.current;
-          // @ts-ignore
-          swiper.params.navigation.nextEl = navigationNextRef.current;
-        }}
-        breakpoints={{
-          640: {
-            slidesPerView: 2,
-          },
-          768: {
-            slidesPerView: 3,
-          },
-          1024: {
-            slidesPerView: 4,
-          },
-          1280: {
-            slidesPerView: 5,
-          },
-        }}
-        className="w-full"
-      >
-        {episodes.map((episode) => (
-          <SwiperSlide key={episode.id}>
-            <EpisodeCard episode={episode} />
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      {loading ? (
+        <p className="text-gray-500">Loading...</p>
+      ) : episodes && episodes.length > 0 ? (
+        <Swiper
+          modules={[Navigation]}
+          spaceBetween={16}
+          slidesPerView={1}
+          navigation={{
+            prevEl: navigationPrevRef.current,
+            nextEl: navigationNextRef.current,
+          }}
+          onBeforeInit={(swiper) => {
+            // @ts-ignore
+            swiper.params.navigation.prevEl = navigationPrevRef.current;
+            // @ts-ignore
+            swiper.params.navigation.nextEl = navigationNextRef.current;
+          }}
+          breakpoints={{
+            640: {
+              slidesPerView: 2,
+            },
+            768: {
+              slidesPerView: 3,
+            },
+            1024: {
+              slidesPerView: 4,
+            },
+            1280: {
+              slidesPerView: 5,
+            },
+          }}
+          className="w-full"
+        >
+          {episodes.map((episode) => (
+            <SwiperSlide key={episode.id}>
+              <EpisodeCard episode={episode} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      ) : (
+        <p className="text-gray-500">Not Exist</p>
+      )}
     </div>
   );
 };

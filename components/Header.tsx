@@ -68,7 +68,7 @@ const Navigation: React.FC = () => {
             <span>Our Services</span>
           </Link>
           <Link
-            href="/schedules"
+            href="/AllPodcasts"
             className="flex items-center space-x-1 hover:text-gray-300"
           >
             <FaPodcast className="h-5 w-5" />

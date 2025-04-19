@@ -1,5 +1,6 @@
+"use client"
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FiShare2, FiBookmark, FiChevronRight } from "react-icons/fi";
 
 import Play from "../public/Play.png";
@@ -19,38 +20,18 @@ interface PodcastCard {
 }
 
 const Educational: React.FC = () => {
-  const podcasts: PodcastCard[] = [
-    {
-      id: 1,
-      title: "NEWS SPLASH",
-      category: "Fitness Focus",
-      image: Story1,
-    },
-    {
-      id: 2,
-      title: "HubCast",
-      category: "Fitness Focus",
-      image: Story2,
-    },
-    {
-      id: 3,
-      title: "Business Talks",
-      category: "Fitness Focus",
-      image: Story3,
-    },
-    {
-      id: 4,
-      title: "Inspiring Conversations",
-      category: "Fitness Focus",
-      image: Story4,
-    },
-    {
-      id: 5,
-      title: "Policy Space Podcast",
-      category: "Fitness Focus",
-      image: Story5,
-    },
-  ];
+  const [podcasts, setPodcasts] = useState<PodcastCard[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("https://api.wokpa.app/api/listeners/popular-and-trendingpodcasts?page=1&per_page=15")
+      .then((res) => res.json())
+      .then((data) => {
+        setPodcasts(data.data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
 
   return (
     <div className="bg-[#fcfcfc] p-4">
@@ -66,6 +47,11 @@ const Educational: React.FC = () => {
       </div>
 
       {/* Podcast Grid */}
+      {loading ? (
+        <p>Loading...</p>
+      ) : podcasts.length === 0 ? (
+        <p>No podcasts available for education.</p>
+      ) : (
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
         {podcasts.map((podcast) => (
           <div
@@ -99,6 +85,7 @@ const Educational: React.FC = () => {
           </div>
         ))}
       </div>
+      )}
     </div>
   );
 };

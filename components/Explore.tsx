@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Explore1 from "../public/Explore1.png";
@@ -14,33 +15,34 @@ interface CategoryCard {
   slug: string;
 }
 
+const generateSlug = (name: string) =>
+  name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+
 const ExploreCategories: React.FC = () => {
-  const categories: CategoryCard[] = [
-    {
-      id: "news",
-      title: "News & Storytelling",
-      imageUrl: Explore1,
-      slug: "news-storytelling",
-    },
-    {
-      id: "entertainment",
-      title: "Entertainment & Lifestyle",
-      imageUrl: Explore2,
-      slug: "entertainment-lifestyle",
-    },
-    {
-      id: "tech",
-      title: "Tech, Sport & Business",
-      imageUrl: Explore3,
-      slug: "tech-sport-business",
-    },
-    {
-      id: "other",
-      title: "Other podcasts",
-      imageUrl: Explore4,
-      slug: "other-podcasts",
-    },
-  ];
+  const [categories, setCategories] = useState<CategoryCard[]>([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch("https://api.wokpa.app/api/listeners/top-categories");
+        const json = await res.json();
+
+        if (json?.data) {
+          const mapped = json.data.map((item: any, index: number) => ({
+            id: `cat-${index}`,
+            title: item.name,
+            imageUrl: item.image_url,
+            slug: generateSlug(item.name),
+          }));
+          setCategories(mapped);
+        }
+      } catch (err) {
+        console.error("Failed to fetch categories:", err);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   return (
     <div className="py-8 px-4 border-t">
@@ -52,20 +54,15 @@ const ExploreCategories: React.FC = () => {
         {categories.map((category) => (
           <Link href={`/category/${category.slug}`} key={category.id}>
             <div className="cursor-pointer relative rounded-lg overflow-hidden group">
-              {/* Category Image */}
               <div className="relative h-40 w-full">
                 <Image
                   src={category.imageUrl}
                   alt={category.title}
-                  layout="fill"
-                  objectFit="cover"
-                  className="transition-transform duration-300 group-hover:scale-105"
+                  fill
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
                 />
-                {/* Overlay */}
-                <div className="absolute inset-0  bottom-0 bg-black bg-opacity-40"></div>
+                <div className="absolute inset-0 bg-black bg-opacity-40" />
               </div>
-
-              {/* Category Title */}
               <div className="absolute bottom-0 left-0 right-0 p-4">
                 <h3 className="text-white font-medium text-base">
                   {category.title}
