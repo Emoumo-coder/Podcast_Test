@@ -26,7 +26,7 @@ const Subscribe: React.FC = () => {
               Never stop listening!
             </h2>
             <p className="text-gray-700 mb-4">
-              Every episodes is a journey you don't wanna miss out on.
+              Every episodes is a journey you don&apos;t wanna miss out on.
             </p>
             <p className="text-xs pt-8 text-gray-600 mb-6">
               Get the latest headlines and unique ABR stories sent every

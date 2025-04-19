@@ -66,7 +66,7 @@ const AllEpisodes = () => {
             <p>No episodes available.</p>
           ) : (
             episodes.map((episode) => (
-            <div className="flex items-start space-x-6 border-t py-4">
+            <div className="flex items-start space-x-6 border-t py-4"  key={episode.id}>
               {/* Thumbnail */}
               <div className="w-32 h-32 relative">
                 <Image

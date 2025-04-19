@@ -29,7 +29,7 @@ const EditorsPicks: React.FC = () => {
     <div className="bg-gray-100 p-6">
       <div className=" mx-auto">
         <div className="mb-2">
-          <h2 className="text-xl font-bold uppercase pb-2">EDITOR'S PICKS</h2>
+          <h2 className="text-xl font-bold uppercase pb-2">EDITOR&apos;S PICKS</h2>
           <div className=" border-l-4 space-x-3 gap-2 border-x-2 border-red-700 ">
             <p className="text-sm text-gray-600 px-2">
               {"  "} Featured Episodes{" "}
@@ -60,7 +60,7 @@ const EditorsPicks: React.FC = () => {
                     </svg>
                   </div>
                   <h3 className="font-bold text-lg text-white">
-                    Bridging the Financing Gap in Nigeria's off-grid sector
+                    Bridging the Financing Gap in Nigeria&apos;s off-grid sector
                   </h3>
                 </div>
               </div>

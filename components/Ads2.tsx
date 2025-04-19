@@ -3,13 +3,13 @@ import Ads3 from "../public/Ads3.png";
 
 import Ads4 from "../public/Ads4.png";
 import Ads5 from "../public/Ads5.png";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 
 interface AdBanner {
   id: number;
-  imageUrl: string;
+  imageUrl: StaticImageData;
   altText: string;
-  link: string;
+  link?: string;
 }
 
 const AdBannerRow: React.FC = () => {

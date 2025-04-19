@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import React from "react";
 import { FiShare2, FiBookmark, FiChevronRight } from "react-icons/fi";
 
@@ -15,7 +15,7 @@ interface PodcastCard {
   id: number;
   title: string;
   category: string;
-  image: string;
+  image: StaticImageData;
 }
 
 const StoryTelling: React.FC = () => {
